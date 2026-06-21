@@ -9,7 +9,7 @@ on:
      - main
   workflow_dispatch: 
   schedule: 
-    - cron: '18 15 * * 7' 
+    - cron: '18 15 * * SUN' 
 
 # Definição da Pipeline
 jobs:
