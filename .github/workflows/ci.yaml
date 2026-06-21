@@ -1,0 +1,44 @@
+# Integração contínua com GitHub Actions
+
+name: CI Pipeline
+
+# Execução da pipeline
+on:
+  push:
+   branches: 
+     - main
+  workflow_dispatch: 
+  schedule: 
+    - cron: '18 15 * * 7' 
+
+# Definição da Pipeline
+jobs:
+  test: 
+    runs-on: ubuntu-latest 
+    steps: 
+
+      - name: Checkout Main 
+        uses: actions/checkout@v4 
+        
+      - name: Configuracao Node 
+        uses: actions/setup-node@v6 
+        with:
+          node-version: 24.x 
+          cache: 'npm'
+
+      - name: Instalando dependencias
+        run: npm ci 
+
+      - name: Execucao testes
+        run: npm test 
+        
+      - name: Geracao do relatorio
+        run: npm run test:report
+
+      - name: Publicacao do relatorio
+        uses: actions/upload-artifact@v7
+        with: 
+          name: Relatorio Mochawesome
+          path: mochawesome-report 
+          retention-days: 15 
+          
